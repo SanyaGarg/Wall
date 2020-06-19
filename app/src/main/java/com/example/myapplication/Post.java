@@ -33,8 +33,8 @@ public class Post {
         this.img = mImg;
     }
 
-    public int getLikes() {
-        return likes.size();
+    public List<String> getLikes() {
+        return likes;
     }
 
     public void setLikes(ArrayList<String> mLikes) {
@@ -79,4 +79,7 @@ public class Post {
         img = mImg;
     }
 
+    public String getLikeCount(){
+        return "" + likes.size();
+    }
 }
