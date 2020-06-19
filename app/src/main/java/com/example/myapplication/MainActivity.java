@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setNestedScrollingEnabled(false);
 
-        Loadjson();
+
 
 
         setMainNav = (BottomNavigationView) findViewById(R.id.bottomNavViewBar);
@@ -82,10 +82,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void Loadjson() {
 
-       Wall_API apiInterface = ApiClient.getApiClient().create(Wall_API.class);
+       Wall_API apiInterface = ApiClient.getClient();
 
-        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGVObyI6IjU1NTU1NTU1NTUiLCJ1c2VySWQiOiI1ZWU4ZTE5OGVlYzlkNzBjODY0NWI5OWEiLCJpYXQiOjE1OTI1NjYxMTUsImV4cCI6MTU5MjU4NzcxNX0.T4T1CxqQiHjMUanqMxQ8Fk01QntB3k28DLynn6zzOXA";        Map<String,String> headers = new HashMap<>();
-        headers.put("Authorization",token);
+        String token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGVObyI6IjU1NTU1NTU1NTUiLCJ1c2VySWQiOiI1ZWU4ZTE5OGVlYzlkNzBjODY0NWI5OWEiLCJpYXQiOjE1OTI1Nzg1MzQsImV4cCI6MTU5MjYwMDEzNH0.mz4vKJbtjyKgeLGjRzDQdyfZ923BQiV3Kumj5vxhAbg";
+        Map<String,String> headers = new HashMap<>();
+        headers.put("authorization",token);
 
 
         Call<List<Post>> call;
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(@NotNull Call<List<Post>> call, @NotNull Response<List<Post>> response) {
+                Log.e("Response",response.toString());
                 int responseCode = response.code();
 
                 if (responseCode == 200) {

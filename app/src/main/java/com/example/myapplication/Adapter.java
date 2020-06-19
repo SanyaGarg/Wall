@@ -39,6 +39,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Context context = parent.getContext();          //
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+
         View view = LayoutInflater.from(context).inflate(R.layout.post,parent,false);
         return new MyViewHolder(view,onItemClickListener);
     }
@@ -103,7 +106,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
             itemView.setOnClickListener(this);
             author = itemView.findViewById(R.id.user);
             likes = itemView.findViewById(R.id.likes);
-            comments = itemView.findViewById(R.id.comments);
+            //comments = itemView.findViewById(R.id.comments);
             text = itemView.findViewById(R.id.text);
             imageView = itemView.findViewById(R.id.img);
             date = itemView.findViewById(R.id.date);
