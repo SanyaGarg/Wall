@@ -72,7 +72,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
                 .into(holder.imageView);
 
         holder.author.setText(model.getUserId());
-        holder.likes.setText(model.getLikes());
+        holder.likes.setText(model.getLikeCount());
         holder.text.setText(model.getText());
         holder.date.setText(model.getDate());
     }

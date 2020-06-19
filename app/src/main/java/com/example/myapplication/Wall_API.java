@@ -10,9 +10,7 @@ import retrofit2.http.HeaderMap;
 public interface Wall_API {
 
     @GET("posts")
-   Call<List<Post>> getPosts(
-            @HeaderMap Map<String, String> headers
-   );
+    Call<List<Post>> getPosts(@HeaderMap Map<String, String> headers);
 }
 
 
