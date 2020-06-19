@@ -82,9 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void Loadjson() {
 
-       Wall_API apiInterface = ApiClient.getApiClient().create(Wall_API.class);
+        Wall_API apiInterface = ApiClient.getClient();
 
-        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGVObyI6IjU1NTU1NTU1NTUiLCJ1c2VySWQiOiI1ZWU4ZTE5OGVlYzlkNzBjODY0NWI5OWEiLCJpYXQiOjE1OTI1NjYxMTUsImV4cCI6MTU5MjU4NzcxNX0.T4T1CxqQiHjMUanqMxQ8Fk01QntB3k28DLynn6zzOXA";        Map<String,String> headers = new HashMap<>();
+        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGVObyI6IjU1NTU1NTU1NTUiLCJ1c2VySWQiOiI1ZWU4ZTE5OGVlYzlkNzBjODY0NWI5OWEiLCJpYXQiOjE1OTI1Njg2ODYsImV4cCI6MTU5MjU5MDI4Nn0.76vZGU6k2p_GtbhRY-VwKoZwGi8-wagbxVPnHd957ns";
+        Map<String,String> headers = new HashMap<>();
         headers.put("Authorization",token);
 
 
@@ -95,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(@NotNull Call<List<Post>> call, @NotNull Response<List<Post>> response) {
+
+                Log.i("ON RESPONSE", "GOT RESPONSE");
                 int responseCode = response.code();
 
                 if (responseCode == 200) {
@@ -111,7 +114,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NotNull Call<List<Post>> call, @NotNull Throwable t) {
+                t.printStackTrace();
             }
-            });
+        });
     }
 }
