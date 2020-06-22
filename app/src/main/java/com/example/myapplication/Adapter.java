@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -7,12 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -31,52 +32,68 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
     private List<Post> posts;
     private Context context;
-    private List<String> img;
     private OnItemClickListener onItemClickListener;
+
+    LinearLayout gallery;
 
     public Adapter(List<Post> posts,Context context){
         this.posts = posts;
         this.context = context;
     }
 
-    @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();          //
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-
-        View view = LayoutInflater.from(context).inflate(R.layout.post,parent,false);
-        return new MyViewHolder(view,onItemClickListener);
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater= LayoutInflater.from(context);
+        View view=inflater.inflate(R.layout.post,parent,false);
+        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holders, int position) {
+    public void onBindViewHolder(MyViewHolder holders, int position) {
         final MyViewHolder holder = holders;
         Post model = posts.get(position);
-        List<HorizontalPost> imgs = model.getMedia();
 
-        HorizontalRecyclerViewAdapter horizontalRecyclerViewAdapter = new HorizontalRecyclerViewAdapter(context,imgs);
-        holder.recyclerView.setHasFixedSize(true);
-        holder.recyclerView.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false));
-
-        holder.recyclerView.setAdapter(horizontalRecyclerViewAdapter);
-
-
-//        RequestOptions requestOptions = new RequestOptions();
-//        requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
-//        requestOptions.centerCrop();
-
+        //RequestOptions requestOptions = new RequestOptions();
+        // requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
+        //requestOptions.centerCrop();
         RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .placeholder(R.drawable.background_shadow)
                 .error(R.drawable.ic_launcher_background)
                 .priority(Priority.HIGH);
 
+        LayoutInflater inflater = LayoutInflater.from(context);
 
+    for (int i=0;i<model.getPostMedia().size();i++) {
+
+        //View v = inflater.inflate(R.layout.horizontal,gallery,false);
+        List<String> media = model.getPostMedia();
+
+        Glide.with(context)
+                .load(media.get(i))
+                .apply(options)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        holder.progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        holder.progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(holder.imageView);
+    }
+
+        String s = "" +model.getLikes().size();
         holder.author.setText(model.getUserId());
-        holder.likes.setText(model.getLikes());
+        holder.likes.setText(s);
         holder.text.setText(model.getText());
-        holder.date.setText(model.getDate());
+        holder.date.setText(model.getCreatedAt());
     }
 
     @Override
@@ -85,42 +102,47 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){
-        this.onItemClickListener = onItemClickListener;
+        //   this.onItemClickListener = onItemClickListener;
     }
 
     public interface OnItemClickListener{
         void onItemClick(View view, int position);
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class MyViewHolder extends RecyclerView.ViewHolder{
+        // implements View.OnClickListener{
 
         TextView author,likes,comments,text,date;
+        ProgressBar progressBar;
         ImageView imageView;
-       // ProgressBar progressBar;
-        OnItemClickListener onItemClickListener;
+        //  OnItemClickListener onItemClickListener;
 
-        RecyclerView recyclerView;
-
-        public MyViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            itemView.setOnClickListener(this);
+            // itemView.setOnClickListener(this);
             author = itemView.findViewById(R.id.user);
             likes = itemView.findViewById(R.id.likes);
-            //comments = itemView.findViewById(R.id.comments);
+            comments = itemView.findViewById(R.id.comments);
             text = itemView.findViewById(R.id.text);
-            imageView = itemView.findViewById(R.id.img);
+            gallery = itemView.findViewById(R.id.gallery);
             date = itemView.findViewById(R.id.date);
+            progressBar = itemView.findViewById(R.id.progress_circular);
+            imageView = itemView.findViewById(R.id.horizontal_img);
 
-
-            this.onItemClickListener = onItemClickListener;
-
-            recyclerView = (RecyclerView)itemView.findViewById(R.id.recyclerView);
+            //   this.onItemClickListener = onItemClickListener;
         }
 
-        @Override
-        public void onClick(View v) {
-            onItemClickListener.onItemClick(v,getAdapterPosition());
-        }
+      /*  public MyViewHolder(View view) {
+            super();
+            TextView author,likes,comments,text,date;
+            ImageView imageView;
+            ProgressBar progressBar;
+        }*/
+
+        //  @Override
+        //  public void onClick(View v) {
+        //       onItemClickListener.onItemClick(v,getAdapterPosition());
+        //   }
     }
 }
