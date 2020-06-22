@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -31,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
     private BottomNavigationView setMainNav;
 
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
-    private Adapter adapter;
+     RecyclerView recyclerView;
+     RecyclerView.LayoutManager layoutManager;
+     Adapter adapter;
 
 
     @Override
@@ -41,11 +42,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        layoutManager = new LinearLayoutManager(MainActivity.this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager( new LinearLayoutManager(this));
+     //   recyclerView.setItemAnimator(new DefaultItemAnimator());
+      //  recyclerView.setNestedScrollingEnabled(false);
 
         Loadjson();
 
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
        Wall_API apiInterface = ApiClient.getApiClient().create(Wall_API.class);
 
-        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGVObyI6IjU1NTU1NTU1NTUiLCJ1c2VySWQiOiI1ZWU4ZTE5OGVlYzlkNzBjODY0NWI5OWEiLCJpYXQiOjE1OTI1NjYxMTUsImV4cCI6MTU5MjU4NzcxNX0.T4T1CxqQiHjMUanqMxQ8Fk01QntB3k28DLynn6zzOXA";        Map<String,String> headers = new HashMap<>();
+        final String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGVObyI6IjExMTExMTExMTEiLCJ1c2VySWQiOiI1ZWRmZjEzYTRlZjEwMDBkMzQ4MjVmN2MiLCJpYXQiOjE1OTI3OTg0MDUsImV4cCI6MTU5MjgyMDAwNX0.-l53CitWl9PU_5udHRpL8blN7_LCYE1a-dXpKGKW-Rg";        Map<String,String> headers = new HashMap<>();
         headers.put("Authorization",token);
 
 
@@ -97,16 +97,19 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(@NotNull Call<List<Post>> call, @NotNull Response<List<Post>> response) {
                 int responseCode = response.code();
 
-                if (responseCode == 200) {
+                if(response.isSuccessful()){
+                  //  Toast.makeText(MainActivity.this, "Success"+response.body(), Toast.LENGTH_LONG).show();
+                      if (responseCode == 200) {
 
-                    List<Post> posts = response.body();
-//                    for (Post post : posts) {
-//
-//                    }
-                    adapter = new Adapter(posts, MainActivity.this);
-                    recyclerView.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
+                        List<Post> posts = response.body();
+
+                        recyclerView.setAdapter(new Adapter(posts,MainActivity.this));
+                   // adapter = new Adapter(posts, MainActivity.this);
+                    //recyclerView.setAdapter(adapter);
+                   // adapter.notifyDataSetChanged();
                 }
+                }
+
             }
 
             @Override

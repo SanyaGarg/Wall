@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -7,76 +8,82 @@ import java.util.List;
 
 public class Post {
 
-    @SerializedName("likes")
-    private List<String> likes;
-
-    @SerializedName("_id")
-    private String postId;
-
-    @SerializedName("userId")
-    private String userId;
-
-    @SerializedName("text")
-    private String text;
-
-    @SerializedName("createdAt")
-    private String date;
-
     @SerializedName("postMedia")
-    private List<String> img;
+    @Expose
+    private List<String> postMedia = null;
+    @SerializedName("likes")
+    @Expose
+    private List<Object> likes = null;
+    @SerializedName("_id")
+    @Expose
+    private String id;
+    @SerializedName("userId")
+    @Expose
+    private String userId;
+    @SerializedName("text")
+    @Expose
+    private String text;
+    @SerializedName("createdAt")
+    @Expose
+    private String createdAt;
+    @SerializedName("updatedAt")
+    @Expose
+    private String updatedAt;
 
-    public Post(ArrayList<String> mlikes, String mUserId, String mText,String mDate,ArrayList<String> mImg) {
-        this.likes = mlikes;
-        this.userId = mUserId;
-        this.text = mText;
-        this.date = mDate;
-        this.img = mImg;
+    public List<String> getPostMedia() {
+        return postMedia;
     }
 
-    public int getLikes() {
-        return likes.size();
+    public void setPostMedia(List<String> postMedia) {
+        this.postMedia = postMedia;
     }
 
-    public void setLikes(ArrayList<String> mLikes) {
-        likes = mLikes;
+    public List<Object> getLikes() {
+        return likes;
     }
 
-    public String getPostId(){ return postId; }
+    public void setLikes(List<Object> likes) {
+        this.likes = likes;
+    }
 
-    public void setPostId(String mpostId) {
-        postId = mpostId;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserId() {
         return userId;
     }
 
-    public void setUserId(String mUserId) {
-        userId = mUserId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getText() {
         return text;
     }
 
-    public void setText(String mtext) {
-        text = mtext;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public String getDate() {
-        return date;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setDate(String mdate) {
-        text = mdate;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public List<String> getImg() {
-        return img;
+    public String getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setImg(List<String> mImg) {
-        img = mImg;
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
 }

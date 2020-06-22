@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
@@ -36,25 +38,30 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         this.context = context;
     }
 
-    @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.post,parent,false);
-        return new MyViewHolder(view,onItemClickListener);
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater= LayoutInflater.from(context);
+        View view=inflater.inflate(R.layout.post,parent,false);
+        return new MyViewHolder(view);
     }
-
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holders, int position) {
+    public void onBindViewHolder(MyViewHolder holders, int position) {
         final MyViewHolder holder = holders;
         Post model = posts.get(position);
 
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
-        requestOptions.centerCrop();
+        //RequestOptions requestOptions = new RequestOptions();
+       // requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
+        //requestOptions.centerCrop();
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.background_shadow)
+                .error(R.drawable.ic_launcher_background)
+                .priority(Priority.HIGH);
+
 
         Glide.with(context)
-                .load(model.getImg())
-                .apply(requestOptions)
+                .load(model.getPostMedia().toString())
+                .apply(options)
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -72,9 +79,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
                 .into(holder.imageView);
 
         holder.author.setText(model.getUserId());
-        holder.likes.setText(model.getLikes());
+        holder.likes.setText(model.getLikes().toString());
         holder.text.setText(model.getText());
-        holder.date.setText(model.getDate());
+        holder.date.setText(model.getCreatedAt());
     }
 
     @Override
@@ -83,24 +90,24 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){
-        this.onItemClickListener = onItemClickListener;
+     //   this.onItemClickListener = onItemClickListener;
     }
 
     public interface OnItemClickListener{
         void onItemClick(View view, int position);
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class MyViewHolder extends RecyclerView.ViewHolder{// implements View.OnClickListener{
 
         TextView author,likes,comments,text,date;
         ImageView imageView;
         ProgressBar progressBar;
-        OnItemClickListener onItemClickListener;
+      //  OnItemClickListener onItemClickListener;
 
-        public MyViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            itemView.setOnClickListener(this);
+           // itemView.setOnClickListener(this);
             author = itemView.findViewById(R.id.user);
             likes = itemView.findViewById(R.id.likes);
             comments = itemView.findViewById(R.id.comments);
@@ -109,12 +116,19 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
             date = itemView.findViewById(R.id.date);
             progressBar = itemView.findViewById(R.id.progress_circular);
 
-            this.onItemClickListener = onItemClickListener;
+         //   this.onItemClickListener = onItemClickListener;
         }
 
-        @Override
-        public void onClick(View v) {
-            onItemClickListener.onItemClick(v,getAdapterPosition());
-        }
+      /*  public MyViewHolder(View view) {
+            super();
+            TextView author,likes,comments,text,date;
+            ImageView imageView;
+            ProgressBar progressBar;
+        }*/
+
+      //  @Override
+      //  public void onClick(View v) {
+     //       onItemClickListener.onItemClick(v,getAdapterPosition());
+     //   }
     }
 }
