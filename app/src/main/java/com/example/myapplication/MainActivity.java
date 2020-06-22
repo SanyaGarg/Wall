@@ -120,8 +120,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG,"working");
 
                List<Post> posts = new ArrayList<>();
-                Gson gson = new Gson();
-                Post[] enums = gson.fromJson(response.body().toString(), Post[].class);
 
                 int responseCode = response.code();
 

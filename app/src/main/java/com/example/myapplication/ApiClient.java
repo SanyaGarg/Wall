@@ -33,11 +33,6 @@ public class ApiClient {
     public static Retrofit retrofit ;
     public static Retrofit getClient() {
         if (retrofit == null) {
-
-//            Gson gson = new GsonBuilder()
-//                    .setLenient()
-//                    .create();
-
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(getHttpClient().build())

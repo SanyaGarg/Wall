@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
@@ -61,10 +62,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         holder.recyclerView.setAdapter(horizontalRecyclerViewAdapter);
 
 
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
-        requestOptions.centerCrop();
+//        RequestOptions requestOptions = new RequestOptions();
+//        requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
+//        requestOptions.centerCrop();
 
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.background_shadow)
+                .error(R.drawable.ic_launcher_background)
+                .priority(Priority.HIGH);
 
 
         holder.author.setText(model.getUserId());
