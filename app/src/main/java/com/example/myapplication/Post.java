@@ -23,25 +23,26 @@ public class Post {
     private String date;
 
     @SerializedName("postMedia")
-    private List<String> img;
+    private List<HorizontalPost> media;
 
-    public Post(ArrayList<String> mlikes, String mUserId, String mText,String mDate,ArrayList<String> mImg) {
+
+    public Post(List<String> mlikes, String mUserId, String mText,String mDate,List<HorizontalPost> mMedia) {
         this.likes = mlikes;
         this.userId = mUserId;
         this.text = mText;
         this.date = mDate;
-        this.img = mImg;
+        this.media = mMedia;
     }
 
-    public int getLikes() {
-        return likes.size();
+    public String getLikes() {
+        return Integer.toString(likes.size());
     }
 
-    public void setLikes(ArrayList<String> mLikes) {
+    public void setLikes(List<String> mLikes) {
         likes = mLikes;
     }
 
-    public String getPostId(){ return postId; }
+      public String getPostId(){ return postId; }
 
     public void setPostId(String mpostId) {
         postId = mpostId;
@@ -71,12 +72,12 @@ public class Post {
         text = mdate;
     }
 
-    public List<String> getImg() {
-        return img;
+    public List<HorizontalPost> getMedia() {
+        return media;
     }
 
-    public void setImg(List<String> mImg) {
-        img = mImg;
+    public void setMedia(List<HorizontalPost> mMedia) {
+        this.media = mMedia;
     }
 
 }

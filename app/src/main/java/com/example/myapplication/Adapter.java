@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -29,6 +30,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
     private List<Post> posts;
     private Context context;
+    private List<String> img;
     private OnItemClickListener onItemClickListener;
 
     public Adapter(List<Post> posts,Context context){
@@ -50,29 +52,20 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder holders, int position) {
         final MyViewHolder holder = holders;
         Post model = posts.get(position);
+        List<HorizontalPost> imgs = model.getMedia();
+
+        HorizontalRecyclerViewAdapter horizontalRecyclerViewAdapter = new HorizontalRecyclerViewAdapter(context,imgs);
+        holder.recyclerView.setHasFixedSize(true);
+        holder.recyclerView.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false));
+
+        holder.recyclerView.setAdapter(horizontalRecyclerViewAdapter);
+
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
         requestOptions.centerCrop();
 
-        Glide.with(context)
-                .load(model.getImg())
-                .apply(requestOptions)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        holder.progressBar.setVisibility(View.GONE);
-                        return false;
-                    }
 
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        holder.progressBar.setVisibility(View.GONE);
-                        return false;
-                    }
-                })
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(holder.imageView);
 
         holder.author.setText(model.getUserId());
         holder.likes.setText(model.getLikes());
@@ -97,8 +90,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
         TextView author,likes,comments,text,date;
         ImageView imageView;
-        ProgressBar progressBar;
+       // ProgressBar progressBar;
         OnItemClickListener onItemClickListener;
+
+        RecyclerView recyclerView;
 
         public MyViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
@@ -110,9 +105,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
             text = itemView.findViewById(R.id.text);
             imageView = itemView.findViewById(R.id.img);
             date = itemView.findViewById(R.id.date);
-            progressBar = itemView.findViewById(R.id.progress_circular);
+
 
             this.onItemClickListener = onItemClickListener;
+
+            recyclerView = (RecyclerView)itemView.findViewById(R.id.recyclerView);
         }
 
         @Override
