@@ -2,10 +2,12 @@ package com.example.myapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -56,22 +58,30 @@ public class MainActivity extends AppCompatActivity {
         setMainNav.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
             @Override
             public void onNavigationItemReselected(@NonNull MenuItem item) {
+                Fragment selectedFragment = null;
                 switch (item.getItemId()) {
 
                     case R.id.share:
-                        setMainNav.setItemBackgroundResource(R.color.colorGrey);
-                        return;
+                       // startActivity(new Intent(Wall.this,
+                       //         Share.class));
+                       // overridePendingTransition(0,0);
+                        return ;
                     case R.id.community:
-                        setMainNav.setItemBackgroundResource(R.color.colorPrimary);
-                        return;
-                    case R.id.meetings:
-                        setMainNav.setItemBackgroundResource(R.color.colorAccent);
-                        return;
+                        //selectedFragment = new CommunityFragment();
 
-                    default:
-                        return;
+                        break;
+                    case R.id.meetings:
+                       // selectedFragment = new MeetingsFragment();
+                        break ;
+                    case R.id.profile:
+                        //selectedFragment = new ProfileFragment();
+                        break ;
                 }
+
+                //assert selectedFragment != null;
+               // getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
             }
+
         });
     }
 
@@ -84,7 +94,8 @@ public class MainActivity extends AppCompatActivity {
 
         Wall_API apiInterface = ApiClient.getApiClient().create(Wall_API.class);
 
-        final String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGVObyI6IjU1NTU1NTU1NTUiLCJ1c2VySWQiOiI1ZWU4ZTE5OGVlYzlkNzBjODY0NWI5OWEiLCJpYXQiOjE1OTI4MjQ1NDYsImV4cCI6MTU5Mjg0NjE0Nn0.FUYX2G0kZlEQHWvFf4r4KegY5XT0OGZqLRWC0fXbUa8";        Map<String,String> headers = new HashMap<>();
+        final String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGVObyI6IjU1NTU1NTU1NTUiLCJ1c2VySWQiOiI1ZWU4ZTE5OGVlYzlkNzBjODY0NWI5OWEiLCJpYXQiOjE1OTMwNjUxMDksImV4cCI6MTU5MzA4NjcwOX0.dfhmDkXj_X9LExVnJLyvPPIIQlivh-LB_aKnQzAJ3zs";
+        Map<String,String> headers = new HashMap<>();
         headers.put("Authorization",token);
 
 

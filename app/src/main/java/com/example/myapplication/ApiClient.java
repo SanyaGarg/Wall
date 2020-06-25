@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     public static final String URL = "https://community-ebh.herokuapp.com/";
-    public static final String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGVObyI6IjU1NTU1NTU1NTUiLCJ1c2VySWQiOiI1ZWU4ZTE5OGVlYzlkNzBjODY0NWI5OWEiLCJpYXQiOjE1OTI1MzE3NjEsImV4cCI6MTU5MjU1MzM2MX0.ifn_913b9B3Ex3MztDtGa0ll4D87-YET5ZjoLUQk0i0";
+    public static final String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGVObyI6IjU1NTU1NTU1NTUiLCJ1c2VySWQiOiI1ZWU4ZTE5OGVlYzlkNzBjODY0NWI5OWEiLCJpYXQiOjE1OTI4Nzk5ODEsImV4cCI6MTU5MjkwMTU4MX0.8IV8zwYfRThNZce2d8LGifxYcYEYlmk75vvc_AhI3ZQ";
     public static Retrofit retrofit;
 
     public static Retrofit getApiClient(){

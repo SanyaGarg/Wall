@@ -19,18 +19,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <RelativeLayout
+                android:id="@+id/top_part"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
             <TextView
                 android:id="@+id/user"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:drawablePadding="10dp"
+                android:drawablePadding="0dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/colorBlack"
                 android:gravity="bottom"
                 android:text="Author"
                 android:layout_alignEnd="@+id/date"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginStart="5dp"
                 />
 
@@ -71,7 +76,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="110dp"
-                        android:scaleType="centerCrop"
+                        android:scaleType="fitCenter"
+                        android:layout_gravity="center"
                         tools:ignore="UnusedAttribute"
                         android:contentDescription="TODO" />
 
@@ -86,15 +92,17 @@
                 android:layout_marginTop="100dp"
                 style="@android:style/Widget.ProgressBar.Small"/>
 
+            </RelativeLayout>
+
             <FrameLayout
                 android:id="@+id/layoutApp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/horizontalscroll"
+                android:layout_height="40dp"
+                android:layout_below="@id/top_part"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="10dp"
-                android:padding="5dp">
+                android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/fav"
@@ -105,8 +113,9 @@
 
                 <ImageView
                     android:id="@+id/comment"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/comments"
                     android:layout_marginStart="40dp">
                 </ImageView>
 

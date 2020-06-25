@@ -2,11 +2,16 @@ package com.example.myapplication;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -26,6 +31,9 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.myapplication.Post;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
@@ -33,6 +41,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
     private List<Post> posts;
     private Context context;
     private OnItemClickListener onItemClickListener;
+
 
     LinearLayout gallery;
 
@@ -50,6 +59,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holders, int position) {
+
         final MyViewHolder holder = holders;
         Post model = posts.get(position);
 
@@ -69,9 +79,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         //View v = inflater.inflate(R.layout.horizontal,gallery,false);
         List<String> media = model.getPostMedia();
 
+        RequestOptions myOptions = new RequestOptions()
+                .encodeFormat(Bitmap.CompressFormat.JPEG)
+                .override(1280, 1024) // this is what you need to take care of WxH
+                .fitCenter();
+
         Glide.with(context)
                 .load(media.get(i))
-                .apply(options)
+                .apply(myOptions)
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -87,6 +102,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
                 })
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(holder.imageView);
+
+            LoadImage loadImage = new LoadImage(holder.imageView);
+            loadImage.execute(media.get(i));
     }
 
         String s = "" +model.getLikes().size();
@@ -109,12 +127,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         void onItemClick(View view, int position);
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         // implements View.OnClickListener{
 
-        TextView author,likes,comments,text,date;
+        TextView author, likes, comments, text, date;
         ProgressBar progressBar;
         ImageView imageView;
+        Button comment;
         //  OnItemClickListener onItemClickListener;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -129,20 +148,35 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
             date = itemView.findViewById(R.id.date);
             progressBar = itemView.findViewById(R.id.progress_circular);
             imageView = itemView.findViewById(R.id.horizontal_img);
+            //comment =  itemView.findViewById(R.id.comment);
+
 
             //   this.onItemClickListener = onItemClickListener;
         }
+    }
+}
+ class LoadImage extends AsyncTask<String,Void,Bitmap>{
 
-      /*  public MyViewHolder(View view) {
-            super();
-            TextView author,likes,comments,text,date;
-            ImageView imageView;
-            ProgressBar progressBar;
-        }*/
+    ImageView imageView;
+    public LoadImage(ImageView ivResult){
+        this.imageView = ivResult;
+    }
 
-        //  @Override
-        //  public void onClick(View v) {
-        //       onItemClickListener.onItemClick(v,getAdapterPosition());
-        //   }
+    @Override
+    protected Bitmap doInBackground(String... strings) {
+        String urlLink = strings[0];
+        Bitmap bitmap=null;
+
+        try {
+            InputStream inputStream = new java.net.URL(urlLink).openStream();
+            bitmap = BitmapFactory.decodeStream(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
+    protected void onPostExecute(Bitmap bitmap){
+        imageView.setImageBitmap(bitmap);
     }
 }
